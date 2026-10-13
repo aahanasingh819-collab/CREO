@@ -1,6 +1,9 @@
 """Small, bounded Gemini REST adapter. No SDK, background worker, or paid fallback."""
 import json
 import re
+import logging
+
+logger = logging.getLogger(__name__)
 from datetime import date, timedelta
 from decimal import Decimal, InvalidOperation
 from urllib.error import HTTPError, URLError
@@ -123,9 +126,15 @@ def generate_draft(idea):
         text = ''.join(part['text'] for part in parts if not part.get('thought') and isinstance(part.get('text'), str))
         return validate_draft(json.loads(text))
     except HTTPError as exc:
+        error_body = exc.read().decode("utf-8", errors="replace")
+        logger.error("Gemini API error %s: %s", exc.code, error_body[:1000])
+
         if exc.code == 429:
-            raise BuilderError('Gemini’s free-tier quota is currently unavailable. Try later or use the local starter.') from None
-        raise BuilderError('Gemini could not process the request. Your idea is preserved below; the local starter is available.') from None
+            raise BuilderError("Gemini quota exceeded.") from None
+
+        raise BuilderError(
+            "Gemini could not process the request."
+        ) from None
     except (URLError, TimeoutError, OSError):
         raise BuilderError('Gemini could not be reached. Your idea is preserved below; try the local starter.') from None
     except (ValueError, KeyError, IndexError, TypeError, AttributeError, RecursionError):
