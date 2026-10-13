@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Creator matches — CREO{% endblock %}
+{% block content %}
+<section class="container directory-page">
+  <a class="back-link" href="{{ brief.get_absolute_url }}">← {{ brief.title }}</a>
+  <div class="eyebrow">THE RIGHT MIND FOR YOUR VISION</div>
+  <div class="section-heading"><div><h1>A fit you can <span class="serif">understand.</span></h1><p class="lead">Creator compatibility for “{{ brief.title }}”. Every score has a reason.</p></div><a class="button button-outline" href="{% url 'creator_compare' %}?brief={{ brief.pk }}">Compare your picks ↗</a></div>
+  <div class="match-method"><h3>How the score works</h3><p>Content type 25 · aspect ratio 10 · style 15 · tools 20 · skills 15 · specializations 10 · availability 5. Optional categories without requirements are excluded; the remaining points are scaled to 100.</p><p>Portfolio metadata receives more weight than profile-only tool claims. This is a rule-based compatibility score, not a review of artistic quality. Budget fit and deadline commitment are <strong>not scored</strong> because creators haven’t supplied rates or schedules.</p><a href="{% url 'brief_edit' brief.pk %}">Refine your requirements →</a></div>
+  <div class="match-list">
+  {% for match in matches %}<article class="match-card">
+    <div class="match-heading"><div class="identity"><span class="avatar">{{ match.profile.initials }}</span><div><h3><a href="{{ match.profile.get_absolute_url }}">{{ match.profile.display_name }} ↗</a></h3><p>{{ match.profile.headline }}</p></div></div><div class="score"><strong>{{ match.score }}</strong><span>/100<br>compatibility</span></div></div>
+    {% if match.demo %}<span class="status-pill">Fictional demo · metadata only</span>{% endif %}
+    <div class="match-summary"><a class="invite-link" href="{% url 'invite_creator' brief.pk match.profile.pk %}">Invite creator ↗</a><span>{{ match.profile.get_availability_display }}</span><span>{{ match.items|length }} portfolio entries</span><form method="post" action="{% url 'comparison_update' match.profile.pk %}">{% csrf_token %}<input type="hidden" name="next" value="{{ request.get_full_path }}"><button class="text-button" type="submit">＋ Add to comparison</button></form></div>
+    <details><summary>Why this match · {{ match.score }}/100</summary>{% include 'briefs/score_rows.html' %}</details>
+    <details class="risk-details"><summary>Commercial-use review notes</summary><ul class="risk-list">{% for warning in match.warnings %}<li>{{ warning }}</li>{% endfor %}</ul></details>
+  </article>{% empty %}<div class="empty"><h2>The collective is still growing.</h2><p>No active creator profiles are available yet. Your brief is saved.</p><a href="{{ brief.get_absolute_url }}">Back to brief →</a></div>{% endfor %}
+  </div>
+</section>
+{% endblock %}

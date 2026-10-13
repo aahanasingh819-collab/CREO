@@ -1,0 +1,7 @@
+run = "python manage.py migrate && python manage.py runserver 0.0.0.0:3000"
+entrypoint = "manage.py"
+modules = ["python-3.11"]
+
+[[ports]]
+localPort = 3000
+externalPort = 80

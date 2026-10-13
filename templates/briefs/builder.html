@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}Brief builder — CREO{% endblock %}
+{% block content %}
+<section class="container auth-layout builder-layout">
+  <div class="auth-copy"><a class="back-link" href="{% url 'dashboard' %}">← Your workspace</a><div class="eyebrow">THE BRIEF BUILDER</div><h1>A spark of an idea.<br><span class="serif">A clearer direction.</span></h1><p>Tell us what you’re imagining. Get a starting point you can refine into a brief that gives creators a clear purpose and room to explore.</p><div class="builder-steps"><p><span>01</span> Describe the idea, audience, and mood.</p><p><span>02</span> Review the draft and fill in the details.</p><p><span>03</span> Save it, then explore creator matches.</p></div></div>
+  <div class="form-panel auth-panel"><span class="status-pill">{% if gemini_ready %}Gemini enabled · editable output{% else %}Local starter available{% endif %}</span><h2 class="spaced">What’s the vision?</h2>{% if not gemini_ready %}<p class="muted">Gemini isn’t configured in this environment. The local starter keeps your idea intact and gives you a structure to complete.</p>{% endif %}
+    <form method="post" x-data="{ busy: false }" @submit="busy = true">{% csrf_token %}{% include 'form_fields.html' %}<button class="button w-full" type="submit" :disabled="busy"><span x-show="!busy">Build an editable draft ↗</span><span x-cloak x-show="busy">Shaping your draft…</span></button></form>
+    <p class="help-text spaced">No budget, deadline, or rights are guaranteed by a generated draft. Only your idea text is sent to Gemini when you choose it; your account and saved briefs are not sent.</p>
+  </div>
+</section>
+{% endblock %}

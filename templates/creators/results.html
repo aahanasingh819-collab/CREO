@@ -1,0 +1,9 @@
+{% if invalid_filters %}<div class="notice spaced" role="alert">Some filters are invalid. Correct the selections or <a href="{% url 'directory' %}">reset filters</a>.{{ filter_form.errors }}</div>{% endif %}
+<div class="results-meta"><span><strong>{{ page_obj.paginator.count }}</strong> creative perspective{{ page_obj.paginator.count|pluralize }}{% if q %} for “{{ q }}”{% endif %}</span><span>Find the craft behind the image</span></div>
+<div class="creator-grid">
+  {% for profile in page_obj %}{% include 'creators/card.html' %}
+  {% empty %}<div class="empty"><span class="empty-symbol">✳</span><h2>Open up a little more possibility.</h2><p>No creators matched{% if q %} “{{ q }}”{% else %} this combination{% endif %}. Try fewer requirements or a broader style.</p>
+    {% if suggestions %}<div class="relax-suggestions">{% for suggestion in suggestions %}<a href="?{{ suggestion.query }}">Remove {{ suggestion.field }} → {{ suggestion.count }} creator{{ suggestion.count|pluralize }}</a>{% endfor %}</div>{% else %}<p>Try a tool like Runway, a skill like animation, or a shorter search.</p>{% endif %}
+    <a class="button" href="{% url 'directory' %}">Explore all creators ↗</a></div>{% endfor %}
+</div>
+{% if page_obj.has_other_pages %}<nav class="pagination" aria-label="Creator result pages">{% if page_obj.has_previous %}<a href="?{{ filter_query }}&amp;page={{ page_obj.previous_page_number }}">← Previous</a>{% endif %}<span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>{% if page_obj.has_next %}<a href="?{{ filter_query }}&amp;page={{ page_obj.next_page_number }}">Next →</a>{% endif %}</nav>{% endif %}

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Brand workspace — CREO{% endblock %}
+{% block content %}
+<section class="container dashboard">
+  <div class="eyebrow">BRAND ACCOUNT / YOUR CREATIVE WORKSPACE</div>
+  <div class="section-heading">
+    <div><h1>Big ideas.<br><span class="serif">The right people.</span></h1><p class="lead">Welcome, {{ user.first_name|default:user.username }}. Shape your next project, then discover the minds to make it happen.</p></div>
+    <a class="button" href="{% url 'brief_create' %}">Create a brief <span>＋</span></a>
+  </div>
+  <div class="dashboard-summary">
+    <div><span class="eyebrow">YOUR PROJECTS</span><strong>{{ brief_count }} <small>saved brief{{ brief_count|pluralize }}</small></strong></div>
+    <div><span class="eyebrow">READY TO SHORTLIST</span><strong>{{ active_count }} <small>active brief{{ active_count|pluralize }}</small></strong></div>
+    <div class="dashboard-links"><a href="{% url 'directory' %}">Discover creators ↗</a><a href="{% url 'creator_compare' %}">Your comparison ↗</a></div>
+  </div>
+  <a class="builder-banner" href="{% url 'brief_builder' %}"><span class="builder-symbol">✧</span><div><span class="eyebrow">FROM A SPARK TO A PLAN</span><h3>Start with the idea. Shape the brief.</h3><p>Turn a rough direction into an editable starting point with Gemini, or use the local starter.</p></div><span class="circle-arrow">↗</span></a>
+  <div class="section-heading"><h2>Your <span class="serif">creative briefs.</span></h2><span class="muted">Private to your account</span></div>
+  <div class="brief-grid">
+    {% for brief in briefs %}
+    <article class="brief-card"><div class="brief-card-top"><span class="status-pill status-{{ brief.status|lower }}">{{ brief.get_status_display }}</span><span>{{ brief.get_content_type_display }}</span></div><h3><a href="{{ brief.get_absolute_url }}">{{ brief.title }}</a></h3><p>{{ brief.description|truncatechars:150 }}</p><div class="tags"><span>{{ brief.style }}</span><span>{{ brief.aspect_ratio }}</span>{% if brief.commercial_use %}<span>Commercial use</span>{% endif %}</div><div class="brief-card-facts"><span>{{ brief.currency }} {{ brief.budget_min|floatformat:0 }}–{{ brief.budget_max|floatformat:0 }}</span><span>Due {{ brief.deadline|date:'M j, Y' }}</span></div><div class="work-actions"><a href="{{ brief.get_absolute_url }}">Open brief ↗</a><a href="{% url 'brief_matches' brief.pk %}">Find matches →</a></div></article>
+    {% empty %}<div class="empty"><span class="empty-symbol">✧</span><h2>Your next great project starts here.</h2><p>A clear brief gives creators room to do their best work. Describe your direction, deliverables, budget, and deadline.</p><a class="button" href="{% url 'brief_create' %}">Write your first brief ↗</a></div>{% endfor %}
+  </div>
+</section>
+{% endblock %}

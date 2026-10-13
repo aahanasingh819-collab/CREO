@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Compare creators — CREO{% endblock %}
+{% block content %}
+<section class="container directory-page">
+  <a class="back-link" href="{% url 'directory' %}">← Discover creators</a><div class="eyebrow">DIFFERENT PERSPECTIVES. SIDE BY SIDE.</div><h1>Find your <span class="serif">kind of fit.</span></h1><p class="lead">Compare up to three creators. Choose from the directory or a brief’s matches.</p>
+  {% if briefs %}<form method="get" class="comparison-brief"><label for="compare-brief">Compare against a brief</label><select name="brief" id="compare-brief"><option value="">General comparison</option>{% for option in briefs %}<option value="{{ option.pk }}" {% if brief.pk == option.pk %}selected{% endif %}>{{ option.title }}</option>{% endfor %}</select><button class="button button-small" type="submit">Update →</button></form>{% endif %}
+  {% if brief %}<div class="notice">Comparing for <a href="{{ brief.get_absolute_url }}">{{ brief.title }}</a>. Scores reflect metadata compatibility, not quality or guaranteed delivery. <a href="{% url 'brief_matches' brief.pk %}">See scoring method →</a></div>{% endif %}
+  {% if cards %}<div class="comparison-scroll" role="region" aria-label="Side-by-side creator comparison" tabindex="0"><div class="comparison-grid">
+  {% for match in cards %}<article class="comparison-card">
+    <div class="comparison-identity"><span class="avatar avatar-large">{{ match.profile.initials }}</span><h2><a href="{{ match.profile.get_absolute_url }}">{{ match.profile.display_name }} ↗</a></h2><p>{{ match.profile.headline }}</p>{% if match.profile.is_demo %}<span class="status-pill">Fictional demo</span>{% else %}<span class="status-pill">Self-declared</span>{% endif %}</div>
+    <div class="compare-cell"><span class="eyebrow">COMPATIBILITY</span>{% if brief %}<strong class="compare-score">{{ match.score }}<small>/100</small></strong>{% else %}<p>Select one of your briefs to calculate compatibility.</p>{% endif %}</div>
+    <div class="compare-cell"><span class="eyebrow">AVAILABILITY / LOCATION</span><p>{{ match.profile.get_availability_display }}<br>{{ match.profile.location|default:'Location not listed' }}</p></div>
+    <div class="compare-cell"><span class="eyebrow">SELF-REPORTED TOOLKIT</span><div class="tags">{% for tool in match.profile.tools.all %}<span>{{ tool }}</span>{% empty %}<span>Not supplied</span>{% endfor %}</div></div>
+    <div class="compare-cell"><span class="eyebrow">SELF-REPORTED SKILLS</span><div class="tags">{% for skill in match.profile.skills.all %}<span>{{ skill }}</span>{% empty %}<span>Not supplied</span>{% endfor %}</div></div>
+    <div class="compare-cell"><span class="eyebrow">SPECIALIZATIONS</span><div class="tags">{% for spec in match.profile.specializations.all %}<span>{{ spec }}</span>{% empty %}<span>Not supplied</span>{% endfor %}</div></div>
+    <div class="compare-cell compare-work"><span class="eyebrow">PORTFOLIO / {{ match.items|length }} ENTRIES</span>{% for item in match.items|slice:':2' %}<a href="{{ item.get_absolute_url }}">{% if item.image %}<img src="{{ item.image.url }}" alt="{{ item.title }}" loading="lazy">{% endif %}<strong>{{ item.title }}</strong><p>{{ item.get_format_display }} · {{ item.aspect_ratio }}<br>{{ item.style }}</p></a>{% empty %}<p>No portfolio entries yet.</p>{% endfor %}</div>
+    <div class="compare-cell"><span class="eyebrow">COMMERCIAL-USE REVIEW</span><ul class="risk-list">{% for warning in match.warnings %}<li>{{ warning }}</li>{% endfor %}</ul></div>
+    {% if brief %}<details><summary>Score breakdown</summary>{% include 'briefs/score_rows.html' %}</details>{% endif %}
+    <form class="comparison-remove" method="post" action="{% url 'comparison_update' match.profile.pk %}">{% csrf_token %}<input type="hidden" name="action" value="remove"><input type="hidden" name="next" value="{{ request.get_full_path }}"><button class="text-button" type="submit">Remove from comparison ×</button></form>
+  </article>{% endfor %}</div></div>
+  {% else %}<div class="empty"><span class="empty-symbol">✳</span><h2>Give your shortlist a new perspective.</h2><p>Add up to three creators from the directory to compare their portfolios, tools, skills, and availability.</p><a class="button" href="{% url 'directory' %}">Find creators ↗</a></div>{% endif %}
+</section>
+{% endblock %}

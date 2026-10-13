@@ -1,0 +1,13 @@
+.git
+.env*
+!.env.example
+.venv
+__pycache__
+*.pyc
+db.sqlite3
+media
+private_media
+staticfiles
+artifacts
+.claude
+.rocketride

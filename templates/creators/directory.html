@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Discover creators — CREO{% endblock %}
+{% block content %}
+<section class="container directory-page">
+  <div class="eyebrow">INDEPENDENT MINDS. LIMITLESS POTENTIAL.</div>
+  <div class="section-heading"><div><h1>Find your <span class="serif">creative edge.</span></h1><p class="lead">Discover AI filmmakers, visual storytellers, and world builders.</p></div><a class="button button-outline" href="{% url 'creator_compare' %}">Compare creators ↗</a></div>
+  <form method="get" action="{% url 'directory' %}" hx-get="{% url 'directory' %}" hx-target="#results" hx-push-url="true" hx-trigger="submit" hx-indicator="#search-status">
+    <div class="search-form"><span aria-hidden="true">⌕</span><label class="sr-only" for="id_q">Search creators, skills, or tools</label>{{ filter_form.q }}<button class="button button-small" type="submit">Find creators ↗</button></div>
+    <details class="filter-panel" open><summary>Refine your discovery <span>Skills, tools, style & more</span></summary><div class="filter-grid">{% for field in filter_form %}{% if field.name != 'q' %}<div class="field"><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}</div>{% endif %}{% endfor %}</div><div class="filter-actions"><p>Filters combine. Format, style, and aspect ratio must appear on the same portfolio entry.</p><a href="{% url 'directory' %}">Reset filters</a><button class="button button-small" type="submit">Apply filters →</button></div></details>
+  </form>
+  <div class="search-suggestions"><span>A little inspiration:</span><a href="?q=Cinematic">Cinematic</a><a href="?q=Animation">Animation</a><a href="?q=Product">Product visuals</a><a href="?q=Midjourney">Midjourney</a><span id="search-status" class="htmx-indicator">Searching…</span></div>
+  <div id="results" aria-live="polite">{% include 'creators/results.html' %}</div>
+</section>
+{% endblock %}
