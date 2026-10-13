@@ -23,10 +23,20 @@ LENGTHS = {'title': 140, 'description': 5000, 'audience': 250, 'deliverables': 2
 ENUMS = {'content_type': ['IMAGE', 'FILM', 'ANIMATION', 'PRODUCT'],
          'aspect_ratio': ['16:9', '9:16', '1:1', '21:9', '4:5'], 'currency': ['INR', 'USD', 'EUR', 'GBP']}
 PROPERTIES = {key: {'type': 'string', 'maxLength': limit} for key, limit in LENGTHS.items()}
-PROPERTIES.update({key: {'type': ['string', 'null'], 'enum': values + [None]} for key, values in ENUMS.items()})
-PROPERTIES.update({key: {'type': ['string', 'null']} for key in ['budget_min', 'budget_max', 'deadline']})
-PROPERTIES['commercial_use'] = {'type': ['boolean', 'null']}
-SCHEMA = {'type': 'object', 'properties': PROPERTIES, 'required': list(PROPERTIES), 'additionalProperties': False}
+PROPERTIES.update({
+    key: {'type': 'STRING', 'nullable': True, 'enum': values}
+    for key, values in ENUMS.items()
+})
+PROPERTIES.update({
+    key: {'type': 'STRING', 'nullable': True}
+    for key in ['budget_min', 'budget_max', 'deadline']
+})
+PROPERTIES['commercial_use'] = {'type': 'BOOLEAN', 'nullable': True}
+SCHEMA = {
+    'type': 'OBJECT',
+    'properties': PROPERTIES,
+    'required': list(PROPERTIES)
+}
 
 
 def is_configured():
