@@ -1,140 +1,320 @@
-# CREO
+<div align="center">
 
-A Django marketplace for AI creators and brands. Phases 1�3 include creator portfolios, brand briefs, optional Gemini drafting, filtered discovery, explainable matching, comparison, private evidence review, and invitation-to-delivery engagement tracking. The local starter and all marketplace features work without an AI API key.
+<img src="static/img/mark.svg" alt="CREO logo" width="84" />
 
-## Quick start
+CREO
 
-Python 3.11+ is required (tested with Python 3.12). From the project directory:
+Human Vision. New Possibilities.
 
-```powershell
-py -3 -m venv .venv
-.venv\Scripts\Activate.ps1
+The creative marketplace where great ideas find the right AI talent.
+
+Discover creators. Understand their process. Build better briefs. Collaborate with confidence.
+
+Launch CREO · Explore the Code · Deployment Guide
+
+    
+
+</div>
+
+The idea
+
+A stunning portfolio tells you what someone made. But does it tell you how they made it—or whether they're right for your project?
+
+Brands need filmmakers, animators, motion designers, and generative artists who can deliver a particular creative vision. Yet discovering talent, assessing real capabilities, preparing briefs, and coordinating work often happen across disconnected tools.
+
+CREO brings that journey into one place. It's a full-stack marketplace built around the creative process: creators showcase their work and workflow, while brands turn ideas into actionable briefs, find relevant people, and collaborate through delivery.
+
+What CREO can do
+
+<table>
+<tr><th>For creators</th><th>For brands</th></tr>
+<tr>
+<td>
+
+Build a profile with skills, specializations, tools, and availability.
+
+Publish portfolio images and supported video links.
+
+Explain each project's workflow, format, tools, and licensing notes.
+
+Attach private evidence supporting specific claims.
+
+Receive invitations, accept work, and submit deliverables.
+
+</td>
+<td>
+
+Search and filter creators by relevant creative capabilities.
+
+Create detailed briefs with deliverables, budget, deadlines, and usage needs.
+
+Turn a rough idea into an editable draft with Google Gemini.
+
+See explainable compatibility scores and compare up to three creators.
+
+Invite talent, review deliveries, request revisions, and complete projects.
+
+</td>
+</tr>
+</table>
+
+The experience: from an idea to a collaborator
+
+Imagine a fashion brand looking for an editor to color grade a 30-second cinematic campaign.
+
+01 — Show the work. A creator uploads a color-grading project, adds their skills and tools, and describes the process behind the final result.
+
+02 — Describe the vision. The brand enters a simple request: warm highlights, deep shadows, natural skin tones, and a premium cinematic finish.
+
+03 — Build the brief. Gemini can propose a structured draft. The brand reviews and edits the details before saving; a manual/local starter is available without AI.
+
+04 — Discover the talent. CREO ranks relevant creators, explains the compatibility signals, and lets the brand compare up to three profiles side by side.
+
+05 — Make it happen. The brand invites a creator, who can accept, start work, and submit a delivery link. The brand can request changes or mark the project complete.
+
+Important distinction: Gemini assists with brief drafting. Creator matching uses explainable, rule-based scoring, not AI-generated rankings. A match score is a decision aid, not a guarantee of quality.
+
+Features at a glance
+
+Feature
+
+What it delivers
+
+Creator profiles
+
+Skills, specializations, AI tools, bio, availability, and creative identity
+
+Process-rich portfolios
+
+Images or supported video links, tools/models, formats, aspect ratios, workflows, and licensing notes
+
+Discovery & filtering
+
+Search and combined filters to narrow down relevant talent
+
+Creative briefs
+
+Audience, style, content type, deliverables, budget, deadlines, and commercial-use requirements
+
+Gemini brief builder
+
+Optional AI-assisted drafting with editable output and a non-AI fallback
+
+Explainable matching
+
+Compatibility rankings with reasons and relevant portfolio signals
+
+Creator comparison
+
+Side-by-side comparison of up to three creators
+
+Evidence review
+
+Private claim evidence and administrator review status
+
+Collaboration workflow
+
+Invitations, acceptance, delivery links, revision requests, and completion
+
+Technology behind CREO
+
+Layer
+
+Technologies
+
+Why they're used
+
+Backend
+
+Python, Django 5.2, Django REST Framework
+
+Authentication, permissions, business logic, and data handling
+
+Frontend
+
+Django Templates, Tailwind CSS
+
+Fast, responsive, server-rendered pages
+
+Interactions
+
+HTMX, Alpine.js
+
+Lightweight dynamic updates without a separate SPA
+
+Database
+
+PostgreSQL on Neon
+
+Persistent creator, portfolio, brief, and collaboration records
+
+AI
+
+Google Gemini REST API
+
+Optional structured creative-brief generation
+
+Matching
+
+Python, Django ORM
+
+Transparent, rule-based creator compatibility scoring
+
+Deployment
+
+Render, Waitress, WhiteNoise
+
+Application serving and static asset delivery
+
+Local development
+
+SQLite
+
+Easy setup without provisioning PostgreSQL
+
+Architecture
+
+flowchart LR
+    C[Creator] --> UI[CREO Web App]
+    B[Brand] --> UI
+    UI --> DJ[Django Backend]
+    DJ --> DB[(PostgreSQL / Neon)]
+    DJ --> P[Profiles & Portfolios]
+    DJ --> BR[Creative Briefs]
+    DJ --> M[Search & Matching]
+    DJ --> W[Evidence & Collaboration]
+    BR -. Optional draft generation .-> AI[Google Gemini API]
+
+Try the live demo
+
+Open CREO →
+
+Create a Creator account to build a profile and publish work, or a Brand account to write a brief and discover matching creators.
+
+For a quick walkthrough:
+
+Open Discover creators and inspect a creator's portfolio and creative workflow.
+
+Sign in as a Brand, open My workspace, and choose Create a brief.
+
+Select Try the brief builder, describe a project, and generate an editable draft using Gemini (when configured).
+
+Save the brief and choose Find Creator Matches.
+
+Expand Why this match, then add creators to Compare.
+
+Explore invitations and the delivery/revision workflow.
+
+The project includes a fictional showcase catalog of 14 demo creators and 28 demo portfolio projects. Demo profiles and procedural artwork are illustrative, not evidence of real client work or verified AI skills.
+
+Run locally
+
+Requirements: Python 3.11+ and Git. PostgreSQL is optional for local development.
+
+1. Clone and install
+
+git clone https://github.com/aahanasingh819-collab/CREO.git
+cd CREO
+python -m venv .venv
+
+Activate the environment:
+
+Windows (CMD)
+
+.venv\Scripts\activate
+
+macOS / Linux
+
+source .venv/bin/activate
+
+Then install dependencies:
+
 python -m pip install -r requirements.txt
-# Copy .env.example to .env ONLY if you do not already have .env.
+
+2. Configure the environment
+
+Copy .env.example to .env and adjust values for your setup. For a quick local run, omit DATABASE_URL to use SQLite.
+
+DJANGO_DEBUG=True
+DJANGO_SECRET_KEY=replace-with-a-unique-secret
+DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1
+
+# Optional: PostgreSQL
+# DATABASE_URL=postgresql://user:password@host:5432/database
+
+# Optional: Gemini brief builder
+GEMINI_API_KEY=
+GEMINI_FREE_TIER_CONFIRMED=False
+GEMINI_MODEL=gemini-3.5-flash-lite
+
+Gemini access depends on the availability of your configured model and API quota. Do not commit real API keys. Set the free-tier confirmation only after verifying your account's configuration.
+
+3. Prepare the database and start
+
 python manage.py migrate
 python manage.py seed_demo
 python manage.py runserver
-```
 
-On macOS/Linux: `python3 -m venv .venv`, then `source .venv/bin/activate`; remaining commands are the same. If Windows activation is unavailable, use `.venv\Scripts\python.exe` directly.
+Open http://127.0.0.1:8000/.
 
-Open http://127.0.0.1:8000. Register a creator to edit a profile and publish work, or register a brand to write briefs, rank matches, and compare creators. Seeded accounts deliberately have **unusable passwords**; register your own account rather than using shared credentials. `python manage.py createsuperuser` creates an administrator.
+The seeded demo accounts have unusable passwords. Register your own Creator or Brand account to test authenticated flows.
 
-The local virtual environment in this workspace was created with Codex’s bundled Python because `python` was not on PATH. It can be used directly with `.venv\Scripts\python.exe manage.py runserver`. Virtual environments are machine-specific and ignored by Git.
+To create an administrator or run the test suite:
 
-## Configuration
-
-Existing `.env` is preserved. The app loads `.env` without replacing real environment variables. Settings use `DJANGO_` names to avoid colliding with unrelated services.
-
-| Variable | Behavior |
-| --- | --- |
-| `DJANGO_DEBUG` | Defaults to `True` for the local prototype |
-| `DJANGO_SECRET_KEY` | Required when debug is off; development-only fallback otherwise |
-| `DJANGO_ALLOWED_HOSTS` | Comma-separated hosts, without schemes |
-| `DATABASE_URL` | PostgreSQL connection URL; omitted means SQLite |
-| `CSRF_TRUSTED_ORIGINS` | Comma-separated HTTPS origins for hosted use |
-| `REPLIT_DEV_DOMAIN` | Automatically added to allowed hosts and CSRF origins |
-| `GEMINI_API_KEY` | Optional server-only key; never sent to the browser |
-| `GEMINI_FREE_TIER_CONFIRMED` | Defaults to `False`; enable only for a project kept on the free tier |
-| `GEMINI_MODEL` | Defaults to `gemini-3.5-flash-lite`; also permits `gemini-3.8-flash` |
-
-### Gemini brief builder
-
-Use a Google AI Studio project kept on the **free tier**, without enabling paid billing. Set `GEMINI_API_KEY` in `.env` or Replit Secrets, and set `GEMINI_FREE_TIER_CONFIRMED=True` after checking your project's tier. CREO cannot independently verify billing status: this flag is an operator acknowledgement, not a billing control. The builder makes one bounded REST request, never retries automatically, and never switches to a paid model or another provider.
-
-The adapter uses Google's [structured JSON output API](https://ai.google.dev/gemini-api/docs/generate-content/structured-output?hl=en). The allowed models were listed with free-tier text input/output in the [Gemini pricing documentation](https://ai.google.dev/gemini-api/docs/pricing) on 13 October 2026. Availability and quotas can change; check those pages before enabling it.
-
-Brands explicitly choose Gemini and consent to sending their idea. Only the entered idea and schema instructions are sent; account data and saved briefs are not. Free-tier input may be used by Google to improve its products, so the UI asks for non-confidential ideas. Limits are 10 attempts per account per local calendar day and a 30-second cooldown, enforced by conditional database updates. Provider failures consume an attempt to prevent retry storms.
-
-Generated JSON is validated again on the server for field names, types, enums, text lengths, positive ordered budgets, and valid future dates. Missing details remain blank for review. Nothing becomes a Brief until the brand edits and saves the standard validated form. API outages, invalid output, missing configuration, and quota exhaustion preserve the idea and offer a clearly labeled **local starter template**; this template is not presented as AI generation.
-
-Gemini is not configured in the delivered local environment. The adapter is tested with mocked provider responses; a live Gemini request has not been verified.
-
-### PostgreSQL
-
-Create a PostgreSQL database and user through your host, then set:
-
-```dotenv
-DATABASE_URL=postgresql://creo:YOUR_PASSWORD@localhost:5432/creo
-```
-
-Use `?sslmode=require` when required by your database provider. Run `python manage.py migrate` and `python manage.py seed_demo` against the new database. Switching URLs does not transfer SQLite data. PostgreSQL is configured through `dj-database-url` and psycopg; this environment was verified with SQLite, not a running PostgreSQL service.
-
-### Replit
-
-1. Import this repository into a Python Repl.
-2. Install requirements with `python -m pip install -r requirements.txt`.
-3. Set a random `DJANGO_SECRET_KEY` in Replit Secrets. The development domain is discovered automatically.
-4. Run `python manage.py seed_demo` after the first migration (or run `python manage.py migrate` first).
-5. The Run button executes migrations and serves on `0.0.0.0:3000` through `.replit`.
-
-This is a development/demo configuration, not a production deployment. Real deployments need durable database and media storage, HTTPS/proxy configuration, backups, and rate limiting. When debug is off, Django does not serve uploaded media; configure your host to serve `MEDIA_ROOT` safely. WhiteNoise handles **static** assets only. Replit hosting was not available for verification.
-
-## Frontend
-
-Django templates render every page. Tailwind 3 utilities are compiled and committed to `static/css/tailwind.css`; the semantic design system is in `static/css/site.css` and `static/css/phase2.css`. HTMX updates filtered search results and browser history. Alpine handles mobile navigation, the generation loading state, and consent-based video embeds. Forms, pagination, search, authentication, comparison, and CRUD work without JavaScript; video links provide a no-JavaScript alternative. All runtime styles, scripts, and demo images are local.
-
-Optional CSS rebuild (Node is a **build tool only**, never the application backend):
-
-```sh
-npm exec --yes --package=tailwindcss@3.4.17 -- tailwindcss -i ./static/css/input.css -o ./static/css/tailwind.css --minify
-```
-
-## Architecture
-
-```text
-config/       Settings, URLs, WSGI/ASGI
-accounts/     Custom User, registration, role-aware workspace entry
-creators/     Profile and normalized Tool / Skill / Specialization catalogs
-portfolio/    Owner-protected project CRUD and media validation
-briefs/       Private brand briefs, editable draft builder, Gemini adapter and quota
-discovery/    Validated filters, deterministic scoring, usage warnings, comparison
-templates/    Shared layouts, cards, forms, public and private views
-static/       Committed CSS, vendor JS, original demo art
-trust/        Private evidence uploads, reviewer permissions, revision-bound trust signals
-engagements/  Invitation snapshots, status transitions, participant activity history
-scripts/      Original art generator and Waitress production entry point
-```
-
-`User` has a CREATOR or BRAND role. A creator has one `CreatorProfile`; each profile has many `PortfolioItem` records. Profiles reference tools, skills, and specializations through M2M relations. Portfolio entries reference tools independently of profile claims. Availability and format are indexed; creator and portfolio lookups prefetch related records. Only a small read-only taxonomy API uses DRF (`GET /api/taxonomy/`).
-
-`Brief` belongs to a brand user and references preferred tools, skills, and specializations. Database constraints enforce positive, ordered budget ranges. `GenerationUsage` stores quota counters, not prompts. Comparison is a bounded session list of up to three active public creators. Brief-specific scores and comparison always check the brand's ownership. `Engagement` links a brief to a creator, preserves the shared brief snapshot, and records role-authorized status changes in `EngagementEvent`. `Evidence` belongs to a portfolio project; review approval is bound to its incrementing revision number and becomes stale on edits.
-
-## Discovery and matching
-
-Directory filters combine with AND across skills, tools, specialization, availability, format, aspect ratio, and style. Tools can be listed on the profile or portfolio. Format, aspect ratio, and style must match the **same** portfolio entry. Invalid filters return clear errors, and pagination keeps active filters. Empty results calculate actual result counts after removing each active filter, then suggest up to three useful relaxations.
-
-Matching is deterministic Python, not a Gemini ranking. Weights: content type 25, aspect ratio 10, style 15, tools 20, skills 15, specializations 10, availability 5. Optional criteria omitted from the brief are excluded from the denominator; the remaining score is normalized to 100. Tools listed on portfolio entries get full credit; profile-only tool claims get half credit. Style uses word overlap within entries of the requested content type. Skills and specializations remain self-reported, and portfolio metadata is not independently verified. Ties use creator name, then ID.
-
-Budget fit, price quotes, artistic quality, legal clearance, and deadline commitments are not inferred. Availability is the creator's general self-reported status. Commercial review flags missing usage notes, restriction phrases, linked-video rights questions, and fictional demo work. It always asks for actual source/tool-term review and never labels a creator legally certified or commercially cleared. These conservative flags are not a legal determination.
-
-Suggested demo: register a brand → use the local builder → complete a product brief with `1:1`, `Sculptural product`, Blender, Art direction, and Product campaigns → save → view matches → inspect the score breakdown → add creators → compare against the brief. For empty-state discovery, combine `Product campaign` and `9:16` against the current seed, then use the offered filter relaxations.
-
-## Demo media and data
-
-`python manage.py seed_demo` creates 14 fictional profiles and 28 entries, without overwriting existing accounts or creating duplicate records on rerun. Usernames `demo_creator_01`–`demo_creator_14` are reserved by the seed; if a name already exists, it is skipped rather than claimed. Taxonomy records are also created by the seed and can be managed in Django admin.
-
-All 29 artwork files (including the landing-page hero) are original procedural images generated with Pillow, supplied under the project MIT license. They are labeled demo artwork and do not claim to prove any AI tool’s output or a real person’s abilities. To regenerate them: `python scripts/generate_art.py`. Seeded entries copy the committed images into ignored `media/` storage.
-
-## Validation
-
-```sh
+python manage.py createsuperuser
 python manage.py check
-python manage.py makemigrations --check --dry-run
 python manage.py test
-python manage.py collectstatic --noinput
-```
 
-Tests use an isolated temporary database and temporary upload directory. `requirements.lock.txt` records the verified dependency versions; use `pip install -r requirements.lock.txt` for an exact recreation. CI runs system checks, migration drift checks, and tests.
+Deployment
 
-Image uploads: JPEG/PNG/WebP, 5 MB maximum, 25 megapixels maximum; inspect actual image bytes, reject unsafe extensions, and randomize storage names. Video links: HTTPS YouTube watch/share URLs or public Vimeo numeric links; embed URLs are reconstructed from validated IDs and load only after the viewer clicks. No server-side remote URL fetching. Availability, skills, tools, and licensing notes are explicitly self-declared.
+The live demo runs on Render, backed by Neon PostgreSQL. Production settings include:
 
-See [PHASE3_REPORT.md](PHASE3_REPORT.md) for current results, [DEMO_GUIDE.md](DEMO_GUIDE.md) for the presentation and architecture, and [DEPLOYMENT.md](DEPLOYMENT.md) for hosting configuration. Phase 1 and 2 reports preserve their milestone results.
+DJANGO_DEBUG=False and a strong DJANGO_SECRET_KEY
 
-## Evidence and engagement
+DJANGO_ALLOWED_HOSTS and CSRF_TRUSTED_ORIGINS for the public domain
 
-Creators attach private screenshots or HTTPS proof links via Your evidence. Staff reviewers need the `trust.change_evidence` permission. Public labels distinguish Self-declared, Evidence Attached, and Admin Reviewed for current project revisions; review covers specific submitted claims, not identity or commercial rights. Demo portfolios cannot earn Admin Reviewed status.
+DATABASE_URL for the production PostgreSQL database
 
-Brands invite creators from brief matches after marking the brief Ready to shortlist. Invitation requires explicit sharing consent. Creators accept or decline, start work, and submit an HTTPS delivery link; brands request revisions or complete the engagement. Engagements appear in both participants� workspaces. No email is sent. Briefs with engagement history must be archived rather than deleted.
+DATABASE_MEDIA=True for database-backed uploads on an ephemeral filesystem
 
-Optional showcase data: register a brand, then run `python manage.py seed_showcase --brand YOUR_USERNAME`. This adds two labelled demo briefs without overwriting edits or sending invitations.
+SEED_DEMO=True if the fictional showcase catalog should be provisioned
+
+Optional GEMINI_API_KEY, GEMINI_FREE_TIER_CONFIRMED, and GEMINI_MODEL
+
+The standard production start command is:
+
+python scripts/render_start.py
+
+It applies migrations, optionally seeds the demo catalog, and starts Waitress. See DEPLOYMENT.md for deployment details.
+
+Repository guide
+
+accounts/       Authentication, roles, and user accounts
+creators/       Creator profiles, skills, tools, specializations
+portfolio/      Projects, media references, and storage
+briefs/         Brand briefs and Gemini-assisted drafting
+discovery/      Search, matching, and creator comparison
+trust/          Evidence submission and review
+engagements/    Invitations, delivery, revisions, activity history
+config/         Django settings and routing
+templates/      Website pages
+static/         Styles, scripts, and demo artwork
+scripts/        Deployment startup and demo asset utilities
+
+Trust, transparency & scope
+
+CREO is a marketplace prototype. Creator tools and experience may be self-reported. Evidence review is limited to submitted claims; it does not certify identity, ownership, or commercial usage rights. AI-generated briefs must be reviewed by the brand before use. Matching scores explain available signals and should not be treated as endorsements.
+
+License
+
+See LICENSE for licensing and THIRD_PARTY_NOTICES.md for third-party notices.
+
+<div align="center">
+
+CREO — Human Vision. New Possibilities.
+
+From the first idea to the final delivery.
+
+Explore CREO
+
+</div>
